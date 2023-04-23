@@ -242,3 +242,44 @@ plt.show()
 cv2.imshow('RGB', rgb)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+#Color Cone
+##  HSV - hue / color in degrees [0, 360], saturation / intensity [0, 1], value / brightness [0, 1]
+#Conversions RGB to HSV
+##  V = max = max(R, G, B), min = min(R, G, B)
+##  S = (max - min) / max, or S = 0, if V = 0
+##            / 0 + (G - B) / (max - min), if max = R (use if max is R value)
+##  H = 60 * {  2 + (B - R) / (max - min), if max = G (use if max is G value)
+##            \ 4 + (R - G) / (max - min), if max = B (use if max is B value)
+##  H = H + 360, if H < 0
+
+#Convert RGB to HSV in code
+def f_rgb_to_hsv(r, g, b, scaleFactor):
+    r, g, b = r / 255.0, g / 255.0, b / 255.0
+    cmax = max(r, g, b)
+    cmin = min(r, g, b)
+    diff = cmax - cmin
+    if cmax == cmin:
+        h = 0
+    elif cmax == r:
+        h = (60 * ((g - b) / diff) + 0) % 360
+    elif cmax == g:
+        h = (60 * ((b - r) / diff) + 120) % 360
+    elif cmax == b:
+        h = (60 * ((r - g) / diff) + 240) % 360
+
+    if h < 0:
+        h = h + 360
+    if cmax == 0:
+        s = 0
+    else:
+        s = (diff / cmax) * scaleFactor
+    v = cmax * scaleFactor
+    return h, s, v
+
+print(f_rgb_to_hsv(100, 200, 50, 100)) #this is for one pixel, when convering an image it ourputs a matrix for each channel
+
+im = cv2.imread(r'tulips.jpg')
+HsvIm = cv2.cvtColor(im, cv2.COLOR_BGR2HSV) #converts image to HSV using openCV function
+type(HsvIm)
+HsvIm.shape
