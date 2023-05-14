@@ -1,5 +1,6 @@
 import os
 os.getcwd()
+os.chdir(r'C:\\Users\\dusti\\Documents\\CV_Course')
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,8 +34,17 @@ plt.show() #render the image
 #im = plt.imread(r'C:/Users/dusti/anaconda3/envs/CV_Course/albert-einstein_gray.jpg')
 
 from PIL import Image
-im2 = Image.open(r'albert-einstein_gray.jpg')
-im2.show()
+
+
+file_path = 'C:\\Users\\dusti\\Documents\\CV_Course\\albert-einstein_gray.jpg'
+if os.path.exists(file_path):
+    im2 = Image.open(file_path)
+    im2.show()
+else:
+    print('File not found')
+
+#im2 = Image.open(r'albert-einstein_gray.jpg')
+#im2.show()
 
 type(im2)
 im2 = np.array(im2) #convert to numpy array, the way the course shows doesn't work with PIL
